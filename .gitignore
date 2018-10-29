@@ -1,0 +1,6 @@
+.idea/
+*.class
+*.log
+*/target
+target
+*.txt

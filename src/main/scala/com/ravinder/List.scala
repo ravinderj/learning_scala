@@ -55,4 +55,11 @@ object List {
       case Cons(h, t) => if (op(h)) Cons(h, filter(t, op)) else filter(t, op)
     }
   }
+
+  def reduce[A, C](list: List[A], op: (A, C) => C, start: C): C = {
+    list match {
+      case Nil => start
+      case Cons(h, t) => op(h, reduce(t, op, start))
+    }
+  }
 }

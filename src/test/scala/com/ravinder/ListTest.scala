@@ -2,6 +2,7 @@ package com.ravinder
 
 import com.ravinder.List.map
 import com.ravinder.List.filter
+import com.ravinder.List.reduce
 import org.scalatest.{FunSuite, Matchers}
 
 class ListTest extends FunSuite with Matchers {
@@ -10,6 +11,10 @@ class ListTest extends FunSuite with Matchers {
   private def isEven(num: Int): Boolean = num % 2 == 0
 
   private def isOdd(num: Int): Boolean = num % 2 != 0
+
+  private def sum(a: Int, b: Int): Int = a + b
+
+  private def multiply(a: Int, b: Int): Int = a * b
 
   test("should create list from given numbers") {
     val list = List(1, 2)
@@ -23,7 +28,7 @@ class ListTest extends FunSuite with Matchers {
     list shouldBe Nil
   }
 
-  test("should pass all elements of given list to a given function") {
+  test("should double all the numbers of a list when the mapper function is to double the number") {
     val list = List(1, 2, 3, 4)
 
     val actual = map(list, doubleIt)
@@ -61,5 +66,29 @@ class ListTest extends FunSuite with Matchers {
     val actualOnCallingIsOdd = filter(list, isOdd)
     actualOnCallingIsEven shouldBe expected
     actualOnCallingIsOdd shouldBe expected
+  }
+
+  test("should add all elements when reducer function is to sum two elements") {
+    val list = List(1, 2, 3, 4)
+    val expected = 10
+
+    val actual = reduce(list, sum, 0)
+    actual shouldBe expected
+  }
+
+  test("should get multiplication of all numbers when reducer function is to multiply two numbers") {
+    val list = List(1, 2, 3, 4)
+    val expected = 24
+
+    val actual = reduce(list, multiply, 1)
+    actual shouldBe expected
+  }
+
+  test("should return initial value when array is empty") {
+    val list = List.empty()
+    val expected = 0
+
+    val actual = reduce(list, sum, 0)
+    actual shouldBe expected
   }
 }

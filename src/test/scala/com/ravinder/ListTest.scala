@@ -1,8 +1,5 @@
 package com.ravinder
 
-import com.ravinder.List.map
-import com.ravinder.List.filter
-import com.ravinder.List.reduce
 import org.scalatest.{FunSuite, Matchers}
 
 class ListTest extends FunSuite with Matchers {
@@ -16,22 +13,22 @@ class ListTest extends FunSuite with Matchers {
 
   private def multiply(a: Int, b: Int): Int = a * b
 
-  test("should create list from given numbers") {
+  test("should create list with given numbers") {
     val list = List(1, 2)
 
     list shouldBe Cons(1, Cons(2, Nil))
   }
 
-  test("should give nil when no argument is passed") {
-    val list = List.empty()
+  test("empty list is Nil") {
+    List() shouldBe Nil
 
-    list shouldBe Nil
+    List.empty() shouldBe Nil
   }
 
   test("should double all the numbers of a list when the mapper function is to double the number") {
     val list = List(1, 2, 3, 4)
 
-    val actual = map(list, doubleIt)
+    val actual = list.map(doubleIt)
 
     val expected = List(2, 4, 6, 8)
 
@@ -39,40 +36,40 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("should give Nil for map on empty list") {
-    map(List(), doubleIt) shouldBe List()
+    List.empty().map(doubleIt) shouldBe Nil
   }
 
   test("should filter out even numbers from given list") {
     val list = List(1, 2, 3, 4)
     val expected = List(2, 4)
 
-    val actual = filter(list, isEven)
+    val actual = list.filter(isEven)
     actual shouldBe expected
   }
 
-  test("should filter out odd numbers from given list") {
+  test("should filter odd numbers from given list") {
     val list = List(1, 2, 3, 4)
     val expected = List(1, 3)
 
-    val actual = filter(list, isOdd)
+    val actual = list.filter(isOdd)
     actual shouldBe expected
   }
 
-  test("should return Nil for an empty list") {
+  test("filter should return Nil for an empty list") {
     val list = List.empty()
-    val expected = List()
+    val expected = Nil
 
-    val actualOnCallingIsEven = filter(list, isEven)
-    val actualOnCallingIsOdd = filter(list, isOdd)
+    val actualOnCallingIsEven = list.filter(isEven)
+    val actualOnCallingIsOdd = list.filter(isOdd)
     actualOnCallingIsEven shouldBe expected
     actualOnCallingIsOdd shouldBe expected
   }
 
-  test("should add all elements when reducer function is to sum two elements") {
+  test("should add all numbers when reducer function is to sum two numbers") {
     val list = List(1, 2, 3, 4)
     val expected = 10
 
-    val actual = reduce(list, sum, 0)
+    val actual = list.reduce(sum, 0)
     actual shouldBe expected
   }
 
@@ -80,15 +77,15 @@ class ListTest extends FunSuite with Matchers {
     val list = List(1, 2, 3, 4)
     val expected = 24
 
-    val actual = reduce(list, multiply, 1)
+    val actual = list.reduce(multiply, 1)
     actual shouldBe expected
   }
 
-  test("should return initial value when array is empty") {
+  test("should return initial value when list is empty") {
     val list = List.empty()
     val expected = 0
 
-    val actual = reduce(list, sum, 0)
+    val actual = list.reduce(sum, 0)
     actual shouldBe expected
   }
 }

@@ -1,13 +1,60 @@
 package com.ravinder
 
-sealed trait List[+A]
+sealed trait List[+A] {
 
-case object Nil extends List[Nothing]
+  def head: A
 
-case class Cons[A](h: A, t: List[A]) extends List[A]
+  def tail: List[A]
+
+  def map[B](op: A => B): List[B]
+
+  def filter(op: A => Boolean): List[A]
+
+  def reduce[B](op: (A, B) => B, start: B): B
+}
+
+case object Nil extends List[Nothing] {
+
+  override def head: Nothing = throw new Exception("can't get head of a nil list")
+
+  override def tail: List[Nothing] = throw new Exception("can't get tail of a nil list")
+
+  override def map[B](op: Nothing => B): List[B] = this
+
+  override def filter(op: Nothing => Boolean): List[Nothing] = this
+
+  override def reduce[B](op: (Nothing, B) => B, start: B): B = start
+}
+
+case class Cons[A](h: A, t: List[A]) extends List[A] {
+
+  override def head: A = h
+
+  override def tail: List[A] = t
+
+  override def map[B](op: A => B): List[B] = {
+    List(this) match {
+      case Nil => Nil
+      case _ => Cons(op(h), t.map(op))
+    }
+  }
+
+  def filter(op: A => Boolean): List[A] = {
+    List(this) match {
+      case Nil => Nil
+      case _ => if (op(h)) Cons(h, t.filter(op)) else t.filter(op)
+    }
+  }
+
+  def reduce[B](op: (A, B) => B, start: B): B = {
+    List(this) match {
+      case Nil => start
+      case _ => op(h, t.reduce(op, start))
+    }
+  }
+}
 
 object List {
-  def empty() = Nil
 
   def apply[A](a: A*): List[A] = {
 
@@ -21,45 +68,12 @@ object List {
     go(a.toSeq)
   }
 
-  def head[A](list: List[A]): A = {
-    list match {
-      case Cons(h, _) => h
-      case Nil => throw new Exception("can't get head of a nil list")
-    }
-  }
-
-  def tail[A](list: List[A]): List[A] = {
-    list match {
-      case Cons(_, t) => t
-      case Nil => throw new Exception("can't get tail of a nil list")
-    }
-  }
+  def empty() = Nil
 
   def isEmpty[A](list: List[A]): Boolean = {
     list match {
       case Nil => true
       case _ => false
-    }
-  }
-
-  def map[A, B](list: List[A], op: A => B): List[B] = {
-    list match {
-      case Nil => Nil
-      case _ => Cons(op(List.head(list)), List.map[A, B](List.tail(list), op))
-    }
-  }
-
-  def filter[A](list: List[A], op: A => Boolean): List[A] = {
-    list match {
-      case Nil => Nil
-      case Cons(h, t) => if (op(h)) Cons(h, filter(t, op)) else filter(t, op)
-    }
-  }
-
-  def reduce[A, C](list: List[A], op: (A, C) => C, start: C): C = {
-    list match {
-      case Nil => start
-      case Cons(h, t) => op(h, reduce(t, op, start))
     }
   }
 }

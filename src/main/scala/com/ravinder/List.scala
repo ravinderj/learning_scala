@@ -11,6 +11,8 @@ sealed trait List[+A] {
   def filter(op: A => Boolean): List[A]
 
   def reduce[B](op: (A, B) => B, start: B): B
+
+  def reverse: List[A]
 }
 
 case object Nil extends List[Nothing] {
@@ -24,6 +26,8 @@ case object Nil extends List[Nothing] {
   override def filter(op: Nothing => Boolean): List[Nothing] = this
 
   override def reduce[B](op: (Nothing, B) => B, start: B): B = start
+
+  override def reverse: List[Nothing] = this
 }
 
 case class Cons[A](h: A, t: List[A]) extends List[A] {
@@ -39,18 +43,29 @@ case class Cons[A](h: A, t: List[A]) extends List[A] {
     }
   }
 
-  def filter(op: A => Boolean): List[A] = {
+  override def filter(op: A => Boolean): List[A] = {
     List(this) match {
       case Nil => Nil
       case _ => if (op(h)) Cons(h, t.filter(op)) else t.filter(op)
     }
   }
 
-  def reduce[B](op: (A, B) => B, start: B): B = {
+  override def reduce[B](op: (A, B) => B, start: B): B = {
     List(this) match {
       case Nil => start
       case _ => op(h, t.reduce(op, start))
     }
+  }
+
+  override def reverse(): List[A] = {
+    def go(initial: List[A], list: List[A]): List[A] = {
+      list match {
+        case Nil => initial
+        case Cons(h, t) => go(Cons(h, initial), t)
+      }
+    }
+
+    go(Nil, this)
   }
 }
 

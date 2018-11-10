@@ -88,4 +88,16 @@ class ListTest extends FunSuite with Matchers {
     val actual = list.reduce(sum, 0)
     actual shouldBe expected
   }
+
+  test("should return reverse of list") {
+    val list = List(1, 2, 3, 4)
+    val expected = List(4, 3, 2, 1)
+
+    val actual = list.reverse
+    actual shouldBe expected
+  }
+
+  test("should return Nil for reverse of empty list") {
+    List.empty().reverse shouldBe Nil
+  }
 }

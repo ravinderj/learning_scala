@@ -28,9 +28,9 @@ class ListTest extends FunSuite with Matchers {
   test("should double all the numbers of a list when the mapper function is to double the number") {
     val list = List(1, 2, 3, 4)
 
-    val actual = list.map(doubleIt)
-
     val expected = List(2, 4, 6, 8)
+
+    val actual = list.map(doubleIt)
 
     actual shouldBe expected
   }
@@ -40,29 +40,16 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("should filter out even numbers from given list") {
-    val list = List(1, 2, 3, 4)
-    val expected = List(2, 4)
-
-    val actual = list.filter(isEven)
-    actual shouldBe expected
+    List(1, 2, 3, 4).filter(isEven) shouldBe List(2, 4)
   }
 
   test("should filter odd numbers from given list") {
-    val list = List(1, 2, 3, 4)
-    val expected = List(1, 3)
-
-    val actual = list.filter(isOdd)
-    actual shouldBe expected
+    List(1, 2, 3, 4).filter(isOdd) shouldBe List(1, 3)
   }
 
   test("filter should return Nil for an empty list") {
-    val list = List.empty
-    val expected = Nil
-
-    val actualOnCallingIsEven = list.filter(isEven)
-    val actualOnCallingIsOdd = list.filter(isOdd)
-    actualOnCallingIsEven shouldBe expected
-    actualOnCallingIsOdd shouldBe expected
+    List.empty.filter(isEven) shouldBe Nil
+    List.empty.filter(isOdd) shouldBe Nil
   }
 
   test("should add all numbers when reducer function is to sum two numbers") {
@@ -82,22 +69,28 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("should return initial value when list is empty") {
-    val list = List.empty
-    val expected = 0
-
-    val actual = list.reduce(0)(sum)
-    actual shouldBe expected
+    List.empty.reduce(0)(sum) shouldBe 0
   }
 
   test("should return reverse of list") {
-    val list = List(1, 2, 3, 4)
-    val expected = List(4, 3, 2, 1)
-
-    val actual = list.reverse
-    actual shouldBe expected
+    List(1, 2, 3, 4).reverse shouldBe List(4, 3, 2, 1)
   }
 
   test("should return Nil for reverse of empty list") {
     List.empty.reverse shouldBe Nil
+  }
+
+  test("should flatmap the list") {
+    val numbers = List(1, 4, 7, 10)
+    val expected = List(0, 2, 3, 5, 6, 8, 9, 11)
+
+    def oneAboveAndBelow(num: Int): List[Int] = List(num - 1, num + 1)
+
+    val actual = numbers.flatMap(oneAboveAndBelow)
+    actual shouldBe expected
+  }
+
+  test("should add two lists") {
+    List(0, 1, 2) + List(4, 9) shouldBe List(0, 1, 2, 4, 9)
   }
 }

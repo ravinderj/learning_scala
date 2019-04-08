@@ -1,5 +1,5 @@
-[] Data types
-    [] List (map, filter, reduce, reverse, flatmap)
+[X] Data types
+    [X] List (map, filter, reduce, reverse, flatMap, +)
 [X] Case-class
 [X] Pattern-matching
 [] Error handling (option, either)

@@ -13,6 +13,12 @@ sealed trait List[+A] {
   def reduce[B](start: B)(op: (A, B) => B): B
 
   def reverse: List[A]
+
+  def +[B >: A](l: List[B]): List[B] = {
+    this.reduce(l)((ele, acc) => Cons(ele, acc))
+  }
+
+  def flatMap[B](op: A => List[B]): List[B]
 }
 
 case object Nil extends List[Nothing] {
@@ -28,6 +34,8 @@ case object Nil extends List[Nothing] {
   override def reduce[B](start: B)(op: (Nothing, B) => B): B = start
 
   override def reverse: List[Nothing] = this
+
+  override def flatMap[B](op: Nothing => List[B]): List[B] = this
 }
 
 case class Cons[A](h: A, t: List[A]) extends List[A] {
@@ -66,6 +74,10 @@ case class Cons[A](h: A, t: List[A]) extends List[A] {
     }
 
     go(Nil, this)
+  }
+
+  override def flatMap[B](op: A => List[B]): List[B] = {
+    reduce(List[B]())((ele, acc) => op(ele) + acc)
   }
 }
 

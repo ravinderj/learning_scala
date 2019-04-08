@@ -22,7 +22,7 @@ class ListTest extends FunSuite with Matchers {
   test("empty list is Nil") {
     List() shouldBe Nil
 
-    List.empty() shouldBe Nil
+    List.empty shouldBe Nil
   }
 
   test("should double all the numbers of a list when the mapper function is to double the number") {
@@ -36,7 +36,7 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("should give Nil for map on empty list") {
-    List.empty().map(doubleIt) shouldBe Nil
+    List.empty.map(doubleIt) shouldBe Nil
   }
 
   test("should filter out even numbers from given list") {
@@ -56,7 +56,7 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("filter should return Nil for an empty list") {
-    val list = List.empty()
+    val list = List.empty
     val expected = Nil
 
     val actualOnCallingIsEven = list.filter(isEven)
@@ -69,7 +69,7 @@ class ListTest extends FunSuite with Matchers {
     val list = List(1, 2, 3, 4)
     val expected = 10
 
-    val actual = list.reduce(sum, 0)
+    val actual = list.reduce(0)(sum)
     actual shouldBe expected
   }
 
@@ -77,15 +77,15 @@ class ListTest extends FunSuite with Matchers {
     val list = List(1, 2, 3, 4)
     val expected = 24
 
-    val actual = list.reduce(multiply, 1)
+    val actual = list.reduce(1)(multiply)
     actual shouldBe expected
   }
 
   test("should return initial value when list is empty") {
-    val list = List.empty()
+    val list = List.empty
     val expected = 0
 
-    val actual = list.reduce(sum, 0)
+    val actual = list.reduce(0)(sum)
     actual shouldBe expected
   }
 
@@ -98,6 +98,6 @@ class ListTest extends FunSuite with Matchers {
   }
 
   test("should return Nil for reverse of empty list") {
-    List.empty().reverse shouldBe Nil
+    List.empty.reverse shouldBe Nil
   }
 }

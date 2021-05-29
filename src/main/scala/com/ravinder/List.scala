@@ -97,14 +97,20 @@ object List {
     list == Nil
   }
 
-  def isSorted(list: List[Int]): Boolean = {
-    def go(initial: List[Int], l: List[Int]): Boolean = {
+  def isSorted[A](list: List[A], comp: (A, A) => Boolean): Boolean = {
+    def go(initial: Boolean, l: List[A]): Boolean = {
       l match {
         case Nil => true
-        case Cons(h, t) => (h >= initial.head) && go(Cons(h, initial), t)
+        case Cons(_, Nil) => initial
+        case Cons(h, t) => initial && go(comp(h, t.head), t)
       }
     }
 
-    go(Cons(Int.MinValue, Nil), list)
+    go(initial = true, list)
+  }
+
+  def printAndReturn(b: Boolean): Boolean = {
+    println(b)
+    b
   }
 }

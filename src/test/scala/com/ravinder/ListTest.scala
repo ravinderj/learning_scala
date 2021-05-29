@@ -13,6 +13,10 @@ class ListTest extends FunSuite with Matchers {
 
   private def multiply(a: Int, b: Int): Int = a * b
 
+  private def ascending(a: Int, b: Int): Boolean = a <= b
+
+  private def strSizeAscending(a: String, b: String): Boolean = a.length <= b.length
+
   test("should create list with given numbers") {
     val list = List(1, 2)
 
@@ -94,14 +98,32 @@ class ListTest extends FunSuite with Matchers {
     List(0, 1, 2) + List(4, 9) shouldBe List(0, 1, 2, 4, 9)
   }
 
-  test("list should be sorted") {
-    assert(List.isSorted(List(1, 2, 5, 100)))
-    assert(List.isSorted(List(1, 1, 5, 100)))
-    assert(List.isSorted(List(1, 1, 1, 1)))
-    assert(List.isSorted(List(-3, -1 ,1, 2, 5, 100)))
+  test("number list should be sorted") {
+    assert(List.isSorted(List(), ascending))
+    assert(List.isSorted(List(1), ascending))
+    assert(List.isSorted(List(1, 2), ascending))
+    assert(List.isSorted(List(1, 2, 5, 100), ascending))
+    assert(List.isSorted(List(1, 1, 5, 100), ascending))
+    assert(List.isSorted(List(1, 1, 1, 1), ascending))
+    assert(List.isSorted(List(-3, -1 ,1, 2, 5, 100), ascending))
   }
 
-  test("list should not be sorted") {
-    assert(!List.isSorted(List(1, 2, 5, 4, 100)))
+  test("string list should be sorted by size") {
+    assert(List.isSorted(List(), strSizeAscending))
+    assert(List.isSorted(List("earth"), strSizeAscending))
+    assert(List.isSorted(List("earth", "jupiter"), strSizeAscending))
+    assert(List.isSorted(List("mars", "earth", "uranus", "jupiter"), strSizeAscending))
+    assert(List.isSorted(List("mars", "mars", "uranus", "jupiter"), strSizeAscending))
+    assert(List.isSorted(List("earth", "venus", "earth", "venus"), strSizeAscending))
+  }
+
+  test("number list should not be sorted") {
+    assert(!List.isSorted(List(2, 1), ascending))
+    assert(!List.isSorted(List(1, 2, 5, 4, 100), ascending))
+  }
+
+  test("string list should not be sorted by size") {
+    assert(!List.isSorted(List("jupiter", "earth"), strSizeAscending))
+    assert(!List.isSorted(List("mars", "earth", "uranus", "venus", "jupiter"), strSizeAscending))
   }
 }

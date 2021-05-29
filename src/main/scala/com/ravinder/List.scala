@@ -90,9 +90,21 @@ object List {
     }
   }
 
+
   def empty: Nil.type = Nil
 
   def isEmpty[A](list: List[A]): Boolean = {
     list == Nil
+  }
+
+  def isSorted(list: List[Int]): Boolean = {
+    def go(initial: List[Int], l: List[Int]): Boolean = {
+      l match {
+        case Nil => true
+        case Cons(h, t) => (h >= initial.head) && go(Cons(h, initial), t)
+      }
+    }
+
+    go(Cons(Int.MinValue, Nil), list)
   }
 }

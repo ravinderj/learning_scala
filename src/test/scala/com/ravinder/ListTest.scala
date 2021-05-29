@@ -93,4 +93,15 @@ class ListTest extends FunSuite with Matchers {
   test("should add two lists") {
     List(0, 1, 2) + List(4, 9) shouldBe List(0, 1, 2, 4, 9)
   }
+
+  test("list should be sorted") {
+    assert(List.isSorted(List(1, 2, 5, 100)))
+    assert(List.isSorted(List(1, 1, 5, 100)))
+    assert(List.isSorted(List(1, 1, 1, 1)))
+    assert(List.isSorted(List(-3, -1 ,1, 2, 5, 100)))
+  }
+
+  test("list should not be sorted") {
+    assert(!List.isSorted(List(1, 2, 5, 4, 100)))
+  }
 }

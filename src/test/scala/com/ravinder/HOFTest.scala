@@ -9,4 +9,9 @@ class HOFTest extends FunSuite with Matchers {
     val add5 = HOF.partial1(5, add2Nums)
     add5(10) shouldBe 15
   }
+
+  test("curry takes a function of N arguments and returns a function of one argument that returns another function") {
+    val curriedAdd = HOF.curry(add2Nums)
+    curriedAdd(5)(10) shouldBe 15
+  }
 }
